@@ -1,0 +1,7 @@
+# Don't copy these into the backend image
+__pycache__/
+*.pyc
+*.db
+.env
+venv/
+.venv/
