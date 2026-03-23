@@ -1,0 +1,41 @@
+# ── Python ──────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+env/
+.env
+*.egg-info/
+dist/
+build/
+
+# ── Database ─────────────────────────────────────────────
+backend/devmap.db
+backend/*.db
+
+# ── Node ─────────────────────────────────────────────────
+frontend/node_modules/
+frontend/.svelte-kit/
+frontend/.env
+frontend/.env.*
+frontend/build/
+frontend/dist/
+
+# ── Docs ─────────────────────────────────────────────────
+*.md
+
+# ── OS ───────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Claude ───────────────────────────────────────────────
+.claude/
+
+# ── Editors ──────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
