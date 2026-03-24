@@ -7,4 +7,8 @@ export default defineConfig({
     // Leaflet is browser-only — never try to SSR it
     noExternal: ['leaflet'],
   },
+  server: {
+    host: true,
+    allowedHosts: ['.onrender.com']
+  }
 });
