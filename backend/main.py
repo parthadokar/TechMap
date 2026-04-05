@@ -43,7 +43,7 @@ async def lifespan(app: FastAPI):
     yield  # application runs here — API is available immediately
 
 
-app = FastAPI(title="TechMap API", lifespan=lifespan)
+app = FastAPI(title="TechMap API", lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
 
 # ---------------------------------------------------------------------------
 # CORS
@@ -56,6 +56,7 @@ app.add_middleware(
         "http://localhost:4173",   # Vite preview
         "http://127.0.0.1:5173",
         "http://127.0.0.1:4173",
+        "https://techmap-k1g1.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],
