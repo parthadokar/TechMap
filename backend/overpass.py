@@ -1,23 +1,19 @@
+import asyncio
 import httpx
 from typing import List, Dict
 
-OVERPASS_URL = "https://overpass-api.de/api/interpreter"
+OVERPASS_URL = "https://overpass.kumi.systems/api/interpreter"
 
 # Bounding box for India: south, west, north, east
 INDIA_BBOX = "6.7,68.1,37.1,97.4"
 
-QUERY = f"""
-[out:json][timeout:180];
-(
-  node["office"="it"]["name"]({INDIA_BBOX});
-  way["office"="it"]["name"]({INDIA_BBOX});
-  node["office"="software"]["name"]({INDIA_BBOX});
-  way["office"="software"]["name"]({INDIA_BBOX});
-  node["office"="technology"]["name"]({INDIA_BBOX});
-  way["office"="technology"]["name"]({INDIA_BBOX});
-);
-out center tags;
-"""
+# Split India into 4 regions so they can be fetched in parallel
+INDIA_REGIONS = [
+    "20.0,68.1,37.1,82.7",  # Northwest
+    "20.0,82.7,37.1,97.4",  # Northeast
+    "6.7,68.1,20.0,82.7",   # Southwest
+    "6.7,82.7,20.0,97.4",   # Southeast
+]
 
 
 def _classify(tags: Dict) -> str:
@@ -145,4 +141,19 @@ async def fetch_companies_for_bbox(bbox: str) -> List[Dict]:
 
 
 async def fetch_companies() -> List[Dict]:
-    return await fetch_companies_for_bbox(INDIA_BBOX)
+    """Fetch all of India by querying 4 regions in parallel — ~4x faster than one big query."""
+    tasks = [fetch_companies_for_bbox(bbox) for bbox in INDIA_REGIONS]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+
+    seen: set = set()
+    all_companies: List[Dict] = []
+    for i, result in enumerate(results):
+        if isinstance(result, Exception):
+            print(f"[overpass] Region {i} failed: {result}")
+            continue
+        for c in result:
+            if c["osm_id"] not in seen:
+                seen.add(c["osm_id"])
+                all_companies.append(c)
+
+    return all_companies

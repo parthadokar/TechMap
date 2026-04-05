@@ -1,12 +1,9 @@
-import { sveltekit } from '@sveltejs/kit/vite';
+import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [sveltekit()],
-  ssr: {
-    // Leaflet is browser-only — never try to SSR it
-    noExternal: ['leaflet'],
-  },
+  plugins: [react()],
+  publicDir: 'static',
   server: {
     host: true,
     allowedHosts: ['.onrender.com']
