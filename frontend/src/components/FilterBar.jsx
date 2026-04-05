@@ -9,7 +9,7 @@ const FILTERS = [
 ];
 
 const ACTIVE_CLASSES = {
-  null:       'bg-gray-800 text-white',
+  null:       'bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-900',
   software:   'bg-blue-600 text-white',
   itsupport:  'bg-green-600 text-white',
   cloud:      'bg-purple-600 text-white',
@@ -17,11 +17,11 @@ const ACTIVE_CLASSES = {
 };
 
 const INACTIVE_CLASSES = {
-  null:       'bg-gray-100 text-gray-700 hover:bg-gray-200',
-  software:   'bg-blue-50 text-blue-700 hover:bg-blue-100',
-  itsupport:  'bg-green-50 text-green-700 hover:bg-green-100',
-  cloud:      'bg-purple-50 text-purple-700 hover:bg-purple-100',
-  unknown:    'bg-gray-100 text-gray-600 hover:bg-gray-200',
+  null:       'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600',
+  software:   'bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50',
+  itsupport:  'bg-green-50 text-green-700 hover:bg-green-100 dark:bg-green-900/30 dark:text-green-300 dark:hover:bg-green-900/50',
+  cloud:      'bg-purple-50 text-purple-700 hover:bg-purple-100 dark:bg-purple-900/30 dark:text-purple-300 dark:hover:bg-purple-900/50',
+  unknown:    'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600',
 };
 
 export default function FilterBar() {
@@ -33,7 +33,7 @@ export default function FilterBar() {
   }
 
   return (
-    <div className="flex flex-wrap gap-2 p-3 border-b bg-white">
+    <div className="flex flex-wrap gap-2 p-3 border-b dark:border-gray-700 bg-white dark:bg-gray-900">
       {FILTERS.map(f => {
         const isActive = activeFilter === f.key;
         const cls = isActive ? ACTIVE_CLASSES[f.key] : INACTIVE_CLASSES[f.key];

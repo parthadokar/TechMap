@@ -8,6 +8,7 @@ venv/
 .venv/
 env/
 .env
+.env.*
 *.egg-info/
 dist/
 build/
@@ -18,14 +19,10 @@ backend/*.db
 
 # ── Node ─────────────────────────────────────────────────
 frontend/node_modules/
-frontend/.svelte-kit/
 frontend/.env
 frontend/.env.*
 frontend/build/
 frontend/dist/
-
-# ── Docs ─────────────────────────────────────────────────
-*.md
 
 # ── OS ───────────────────────────────────────────────────
 .DS_Store

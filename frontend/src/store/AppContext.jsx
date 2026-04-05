@@ -9,8 +9,15 @@ export function AppProvider({ children }) {
   const [activeFilter, setActiveFilter] = useState(null);
 
   const filtered = useMemo(() => {
-    if (!activeFilter) return companies;
-    return companies.filter(c => c.type === activeFilter);
+    const list = activeFilter
+      ? companies.filter(c => c.type === activeFilter)
+      : companies;
+
+    return [...list].sort((a, b) => {
+      // Score: website=2, email=1 — higher score sorts first
+      const score = c => (c.website ? 2 : 0) + (c.email ? 1 : 0);
+      return score(b) - score(a);
+    });
   }, [companies, activeFilter]);
 
   const countByType = useMemo(() => {

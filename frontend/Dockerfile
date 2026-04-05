@@ -1,25 +1,26 @@
-# ── Base image ────────────────────────────────────────────────────────────────
-# node:22-slim gives us Node 22 on minimal Linux.
-# No more hunting for /run/host/usr/bin/node — it's just "node" inside here.
-FROM node:22-slim
+# ── Stage 1: build ───────────────────────────────────────────────────────────
+FROM node:22-slim AS builder
 
-# ── Working directory ─────────────────────────────────────────────────────────
 WORKDIR /app
 
-# ── Install dependencies ──────────────────────────────────────────────────────
-# Copy package files first (same caching trick as the backend).
-# If package.json hasn't changed, Docker reuses the node_modules layer.
 COPY package.json package-lock.json ./
 RUN npm install
 
-# ── Copy the rest of the frontend code ───────────────────────────────────────
 COPY . .
 
-# ── Expose port ───────────────────────────────────────────────────────────────
-EXPOSE 5173
+# VITE_API_URL is baked into the bundle at build time — pass it as a build arg.
+# Default points to localhost for local docker-compose usage.
+ARG VITE_API_URL=http://localhost:8000
+ENV VITE_API_URL=$VITE_API_URL
 
-# ── Start command ─────────────────────────────────────────────────────────────
-# --host exposes Vite outside the container (same reason as uvicorn's 0.0.0.0).
-# Without --host, Vite only listens on 127.0.0.1 inside the container and
-# you'd never be able to open it in your browser.
-CMD ["npx", "vite", "dev", "--host"]
+RUN npm run build
+
+# ── Stage 2: serve ────────────────────────────────────────────────────────────
+FROM nginx:alpine
+
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

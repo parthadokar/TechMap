@@ -1,5 +1,5 @@
 # Don't copy these into the frontend image
 node_modules/
-.svelte-kit/
+dist/
 build/
 .env

@@ -180,24 +180,24 @@ export default function Map({ onSelect }) {
 
       {/* Company info popup */}
       {popup && (
-        <div className="absolute top-4 left-4 z-10 bg-white rounded-xl shadow-lg p-3 w-56 border border-gray-100">
+        <div className="absolute top-4 left-4 z-10 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-3 w-56 border border-gray-100 dark:border-gray-700">
           <div className="flex items-start justify-between gap-2 mb-1">
-            <p className="text-sm font-semibold text-gray-900 leading-tight">{popup.name}</p>
+            <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 leading-tight">{popup.name}</p>
             <button
               onClick={() => setPopup(null)}
-              className="text-gray-400 hover:text-gray-600 shrink-0 text-base leading-none"
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 shrink-0 text-base leading-none"
             >
               ×
             </button>
           </div>
-          {popup.address && <p className="text-xs text-gray-500 mb-1">{popup.address}</p>}
-          {popup.phone   && <p className="text-xs text-gray-600 mb-1">{popup.phone}</p>}
+          {popup.address && <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{popup.address}</p>}
+          {popup.phone   && <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">{popup.phone}</p>}
           {popup.website && (
             <a
               href={popup.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-blue-500 hover:underline truncate block"
+              className="text-xs text-blue-500 dark:text-blue-400 hover:underline truncate block"
             >
               {popup.website.replace(/^https?:\/\//, '')}
             </a>
@@ -211,7 +211,7 @@ export default function Map({ onSelect }) {
           mapRef.current?.fitBounds(INDIA_BOUNDS, { padding: 20, animate: true });
           setPopup(null);
         }}
-        className="absolute bottom-8 right-12 z-10 bg-white hover:bg-gray-50 text-gray-700 text-xs font-medium px-3 py-1.5 rounded-lg shadow border border-gray-200 transition-colors"
+        className="absolute bottom-8 right-12 z-10 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-medium px-3 py-1.5 rounded-lg shadow border border-gray-200 dark:border-gray-600 transition-colors"
       >
         Reset View
       </button>

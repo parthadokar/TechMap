@@ -5,22 +5,26 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      # Only persist the database file — not the whole folder.
-      # This avoids permission issues while keeping data across restarts.
+      # Persist only the database file — avoids permission issues across restarts.
       - db_data:/app/data
     environment:
       - PYTHONUNBUFFERED=1
       - DB_PATH=/app/data/devmap.db
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
     networks:
       - techmap
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        # VITE_API_URL is baked into the JS bundle at build time.
+        # For local docker-compose: backend is exposed on localhost:8000.
+        # For deployment: override with your real backend URL, e.g.:
+        #   VITE_API_URL=https://api.yourdomain.com docker-compose up --build
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
     ports:
-      - "5173:5173"
-    environment:
-      - INTERNAL_API_URL=http://backend:8000
-      - VITE_API_URL=http://localhost:8000
+      - "80:80"
     depends_on:
       - backend
     networks:

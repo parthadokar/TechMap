@@ -14,7 +14,7 @@ echo "==> Installing frontend deps"
 cd "$ROOT/frontend"
 npm install --silent
 
-echo "==> Starting SvelteKit dev server on :5173"
+echo "==> Starting Vite dev server on :5173"
 npm run dev &
 FRONTEND_PID=$!
 
